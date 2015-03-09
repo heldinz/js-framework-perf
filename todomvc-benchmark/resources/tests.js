@@ -2,7 +2,7 @@ var numberOfItemsToAdd = 100;
 var Suites = [];
 
 Suites.push({
-    name: 'Riot.js',
+    name: 'Riot',
     url: 'todomvc/riot/index.html',
     version: '2.0.11',
     prepare: function (runner, contentWindow, contentDocument) {
