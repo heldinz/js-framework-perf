@@ -5,21 +5,29 @@ interface MithrilStatic {
 	(selector: string, children?: any): MithrilVirtualElement;
 	prop(value?: any): (value?: any) => any;
 	withAttr(property: string, callback: (value: any) => void): (e: Event) => any;
-	module(rootElement: Element, module: MithrilModule): void;
+	module(rootElement: Node, module?: MithrilModule): Object;
 	trust(html: string): String;
 	render(rootElement: Element, children?: any): void;
 	render(rootElement: HTMLDocument, children?: any): void;
-	redraw(): void;
-	route(rootElement: Element, defaultRoute: string, routes: { [key: string]: MithrilModule }): void;
-	route(rootElement: HTMLDocument, defaultRoute: string, routes: { [key: string]: MithrilModule }): void;
-	route(path: string, params?: any, shouldReplaceHistory?: boolean): void;
-	route(): string;
-	route(element: Element, isInitialized: boolean): void;
+	redraw: {
+		(): void;
+		strategy(key: string);
+	};
+	route: {
+		(rootElement:Element, defaultRoute:string, routes:{ [key: string]: MithrilModule }): void
+		(element: Element, isInitialized: boolean): void;
+		(rootElement:HTMLDocument, defaultRoute:string, routes:{ [key: string]: MithrilModule }): void;
+		(path:string, params?:any, shouldReplaceHistory?:boolean): void;
+		(): string;
+		param(key:string): string;
+		mode: string;
+	};
 	request(options: MithrilXHROptions): MithrilPromise;
 	deferred(): MithrilDeferred;
 	sync(promises: MithrilPromise[]): MithrilPromise;
 	startComputation(): void;
 	endComputation(): void;
+	deps(Object: any): Object;
 }
 
 interface MithrilVirtualElement {
@@ -55,10 +63,14 @@ interface MithrilXHROptions {
 	unwrapError?(data: any): any;
 	serialize?(dataToSerialize: any): string;
 	deserialize?(dataToDeserialize: string): any;
-	extract?(xhr: XMLHttpRequest, options: MithrilXHROptions);
+	extract?(xhr: XMLHttpRequest, options: MithrilXHROptions): string;
 	type?(data: Object): void;
-	config?(xhr: XMLHttpRequest, options: MithrilXHROptions)
+	config?(xhr: XMLHttpRequest, options: MithrilXHROptions): XMLHttpRequest;
 }
 
 declare var Mithril: MithrilStatic;
 declare var m: MithrilStatic;
+
+declare module 'mithril' {
+	export = MithrilStatic;
+}

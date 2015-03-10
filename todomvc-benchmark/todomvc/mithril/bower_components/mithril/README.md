@@ -16,7 +16,7 @@ Mithril is a client-side MVC framework - a tool to organize code in a way that i
 
 ### Light-weight
 
-- Only 4kb gzipped, no dependencies
+- Only 5kb gzipped, no dependencies
 - Small API, small learning curve
 
 ### Robust
@@ -44,11 +44,13 @@ app.PageList = function() {
 
 //controller
 app.controller = function() {
-	this.pages = app.PageList();
-	
-	this.rotate = function() {
-		this.pages().push(this.pages().shift())
-	}.bind(this)
+	var pages = app.PageList();
+	return {
+		pages: pages,
+		rotate: function() {
+			pages().push(pages().shift());
+		}
+	}
 };
 
 //view
@@ -57,9 +59,10 @@ app.view = function(ctrl) {
 		ctrl.pages().map(function(page) {
 			return m("a", {href: page.url}, page.title);
 		}),
-		m("a", {onclick: ctrl.rotate}, "Rotate links")
+		m("button", {onclick: ctrl.rotate}, "Rotate links")
 	];
 };
+
 
 //initialize
 m.module(document.getElementById("example"), app);
@@ -70,5 +73,5 @@ m.module(document.getElementById("example"), app);
 ### Learn more
 
 - [Tutorial](http://lhorie.github.io/mithril/getting-started.html)
-- [Differences from Other MVC Frameworks](http://lhorie.github.io/mithril/comparison.html)
+- [Differences from Other Frameworks](http://lhorie.github.io/mithril/comparison.html)
 - [Benchmarks](http://lhorie.github.io/mithril/benchmarks.html)
